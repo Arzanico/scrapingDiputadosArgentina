@@ -35,7 +35,7 @@ else:
 
 
 # Antes de programar el scraper deberiamos saber bien cuanl es el objeto html que contiene la informacion que
-# queremos por ejemplo, cual es el tag que contiene la info que queresmos.
+# queremos por ejemplo, cual es el tag que contiene la info que queremos.
 # podemos identificar el objeto con la informacion a traves del nombre del Tag, del selctor css, "class", del id, etc
 
 # El elemento que me interesa tiene la clase "row-acta"
@@ -49,7 +49,6 @@ datos = soup.find_all("tr", class_=clase)
 
 # Por cada "tr" tag tenemos sus atributos id, class, data-date, row-number etc
 urlActas = list()
-
 for t in datos:
     # Columnas
     cols = t.find_all('td')
@@ -66,6 +65,8 @@ for a in urlActas:
     r = rqs.get(a[0])
     idActa = a[1]
     dateActa = a[2]
+    urlActa = a[0]
+    
     soup = BeautifulSoup(r.content, 'html.parser')
 
     # VAmos a recuperar estos datos -> Período 123 - Reunión 40 - Acta 31
@@ -74,13 +75,11 @@ for a in urlActas:
     reunion = text[1].split()[1]
     acta = text[2].split()[1]
 
-    idVotacion = '{}-{}-{}'.format(periodo, reunion, acta)
 
     # Acta
     div = soup.find('div', class_='white-box')
     h3 = div.find_all('h3')
     h4 = div.find_all('h4')
-    h5 = div.find_all('h5')
 
     titulo = h4[0].text.strip().lower()
     presidente = h4[1].find('b').text
@@ -103,29 +102,28 @@ for a in urlActas:
             }}
     )
 
-    # Diputados
+    # Votacion
     tabla = soup.find('table', id='myTable')
     rows = tabla.find_all('tr')
-
+    idVotacion = '{}-{}-{}'.format(periodo, reunion, acta)
+    cunt = 1
     for r in rows:
         cols = [x.text.strip().lower() for x in r.find_all('td')]
         if cols:
-            fullNomb = cols[1].split(',')
-            nomb = fullNomb[0]
-            ap = fullNomb[1]
-            bloque = cols[2]
-            provincia = cols[3]
             voto = cols[4]
             dichos = cols[5]
 
-            print(nomb)
-            print(ap)
-            print(bloque)
-            print(provincia)
-            print(voto)
-            print('**********')
-
-    break
+        votaciones.append({
+            idVotacion: {
+                'idVoto': count,
+                'voto': voto,
+                'acta': idActa,
+                'dip': idDip
+                'dichos': dichos
+                }
+            }
+        )
+        count += 1
 
 
 
