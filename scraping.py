@@ -65,11 +65,11 @@ for t in datos:
 actas = list()
 votaciones = list()
 for a in urlActas:
-    #Conexion a cada Acta # *********************************
+    # Conexion a cada Acta # *********************************
     r = rqs.get(a[0])
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    idActa = a[1]
+    # idActa = a[1] este es el id que figura en el sitio, pero voy a usar otro
     dateActa = a[2]
     urlActa = a[0]
 
@@ -77,8 +77,9 @@ for a in urlActas:
     text = soup.find('h5').text.split('-')
     periodo = text[0].split()[1]
     reunion = text[1].split()[1]
-    acta = text[2].split()[1]
-
+    numeroActa = text[2].split()[1]
+    idSite = a[1]
+    idActa = idVotacion = '{}-{}-{}'.format(periodo, reunion, numeroActa)
 
     # Acta # *********************************
     div = soup.find('div', class_='white-box')
@@ -90,10 +91,11 @@ for a in urlActas:
     resolucion = h3[0].text
 
     actas.append({
-        idActa:{
+        idActa: {
+            'idActa': idActa,
             'periodo': periodo,
             'reunion': reunion,
-            'acta': acta,
+            'numeroActa': numeroActa,
             'titulo': titulo,
             'presidente': presidente,
             'resolucion': resolucion
@@ -103,34 +105,37 @@ for a in urlActas:
     # Votacion # *********************************
     tabla = soup.find('table', id='myTable')
     rows = tabla.find_all('tr')
-    idVotacion = '{}-{}-{}'.format(periodo, reunion, acta)
-    cunt = 1
-    # Extraccion por fila de los detalles de cada voto
+    count = 1
+    votos = list()
     for r in rows:
         cols = [x for x in r.find_all('td')]
         if cols:
             try:
-                idDip = cols[0].find('div')['id']
+                idDip = cols[0].find('div')['id'].split('-')[1]
             except TypeError:
                 pass
+
             voto = cols[4].text.strip().lower()
             dichos = cols[5].text.strip().lower()
 
-            votaciones.append({
-                idVotacion: {
-                    'idVoto': count,
-                    'voto': voto,
-                    'acta': idActa,
-                    'dip': idDip,
-                    'dichos': dichos
-                }
-            }
-            )
-    count += 1
+            votos.append({
+                'idVoto': count,
+                'voto': voto,
+                'numeroActa': numeroActa,
+                'dip': idDip,
+                'dichos': dichos
+            })
+            count += 1
+
+    if not votos:
+        continue
+    else:
+        votaciones.append({idVotacion: votos})
+
     time.sleep(1)
 # **********************************************************
 
-# CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS 
+# CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS
 # **********************************************************
 
 # **********************************************************
