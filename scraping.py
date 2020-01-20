@@ -105,24 +105,29 @@ for a in urlActas:
     rows = tabla.find_all('tr')
     idVotacion = '{}-{}-{}'.format(periodo, reunion, acta)
     cunt = 1
+    # Extraccion por fila de los detalles de cada voto
     for r in rows:
         cols = [x for x in r.find_all('td')]
         if cols:
-            idDip = cols[0].find('div')['id']
+            try:
+                idDip = cols[0].find('div')['id']
+            except TypeError:
+                pass
             voto = cols[4].text.strip().lower()
             dichos = cols[5].text.strip().lower()
 
-        votaciones.append({
-            idVotacion: {
-                'idVoto': count,
-                'voto': voto,
-                'acta': idActa,
-                'dip': idDip,
-                'dichos': dichos
+            votaciones.append({
+                idVotacion: {
+                    'idVoto': count,
+                    'voto': voto,
+                    'acta': idActa,
+                    'dip': idDip,
+                    'dichos': dichos
+                }
             }
-        }
-        )
+            )
     count += 1
+    time.sleep(1)
 # **********************************************************
 
 # CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS 
