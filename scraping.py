@@ -15,6 +15,8 @@ def unixTimeStampConvert(num):
 # **********************************************************
 # A que sitio me quiero conectar, parametro y URI
 myurl = "https://votaciones.hcdn.gob.ar"
+# Los siguientes datos los saque de la misma pagina, mirando el codigo fuente para ver
+# como enviaba las peticiones y cual debia enviar para obtener todos los datos =)
 formQuery = {'anoSearch': -1, 'txtSearch': ''}
 endPoint = "https://votaciones.hcdn.gob.ar/votaciones/search"
 
@@ -33,7 +35,6 @@ else:
     quit()
 # **********************************************************
 
-
 # Antes de programar el scraper deberiamos saber bien cuanl es el objeto html que contiene la informacion que
 # queremos por ejemplo, cual es el tag que contiene la info que queremos.
 # podemos identificar el objeto con la informacion a traves del nombre del Tag, del selctor css, "class", del id, etc
@@ -47,7 +48,8 @@ soup = BeautifulSoup(r.content, 'html.parser')
 # El tipo de dato es un result set de beautiful soup, es un iterable, algo asi como una lista
 datos = soup.find_all("tr", class_=clase)
 
-# Por cada "tr" tag tenemos sus atributos id, class, data-date, row-number etc
+# EXTRACCION DE LAS URLS DONDE ESTAN LOS DETALLES DE CADA VOTACION
+# **********************************************************
 urlActas = list()
 for t in datos:
     # Columnas
@@ -56,18 +58,20 @@ for t in datos:
     date = unixTimeStampConvert(t['data-date']) # Tengo que convertir el formato de la fecha en human friendly =)
     # Me voy a guardar los datos que extraje en una lista de tuplas
     urlActas.append((myurl + cols[4].find('a')['href'], idActa, date))
+# **********************************************************
 
+# RECORRIDO DE LAS ACTAS Y SCRAPING DE LOS DETALLES - ACTAS Y VOTACION
+# **********************************************************
 actas = list()
-diputados = list()
 votaciones = list()
 for a in urlActas:
-
+    #Conexion a cada Acta # *********************************
     r = rqs.get(a[0])
+    soup = BeautifulSoup(r.content, 'html.parser')
+
     idActa = a[1]
     dateActa = a[2]
     urlActa = a[0]
-    
-    soup = BeautifulSoup(r.content, 'html.parser')
 
     # VAmos a recuperar estos datos -> Período 123 - Reunión 40 - Acta 31
     text = soup.find('h5').text.split('-')
@@ -76,7 +80,7 @@ for a in urlActas:
     acta = text[2].split()[1]
 
 
-    # Acta
+    # Acta # *********************************
     div = soup.find('div', class_='white-box')
     h3 = div.find_all('h3')
     h4 = div.find_all('h4')
@@ -84,12 +88,6 @@ for a in urlActas:
     titulo = h4[0].text.strip().lower()
     presidente = h4[1].find('b').text
     resolucion = h3[0].text
-
-#    ul = div.find_all('ul')
-#    afirmativos = ul[2].find('h3').text
-#    negativos = ul[3].find('h3').text
-#    abstenciones = ul[4].find('h3').text
-#    ausentes = ul[5].find('h3').text
 
     actas.append({
         idActa:{
@@ -99,36 +97,41 @@ for a in urlActas:
             'titulo': titulo,
             'presidente': presidente,
             'resolucion': resolucion
-            }}
+        }}
     )
 
-    # Votacion
+    # Votacion # *********************************
     tabla = soup.find('table', id='myTable')
     rows = tabla.find_all('tr')
     idVotacion = '{}-{}-{}'.format(periodo, reunion, acta)
     cunt = 1
     for r in rows:
-        cols = [x.text.strip().lower() for x in r.find_all('td')]
+        cols = [x for x in r.find_all('td')]
         if cols:
-            voto = cols[4]
-            dichos = cols[5]
+            idDip = cols[0].find('div')['id']
+            voto = cols[4].text.strip().lower()
+            dichos = cols[5].text.strip().lower()
 
         votaciones.append({
             idVotacion: {
                 'idVoto': count,
                 'voto': voto,
                 'acta': idActa,
-                'dip': idDip
+                'dip': idDip,
                 'dichos': dichos
-                }
             }
+        }
         )
-        count += 1
+    count += 1
+# **********************************************************
 
+# CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS 
+# **********************************************************
 
+# **********************************************************
 
-
-# *************************************************+
+#DETALLES Y ANOTACIONES
+# **********************************************************
 # END
 # Realmente no se como lo manejan desde Nacion, pero se me ocurre para mi trabajo que esta es la mejor
 # manera de ordenar los datos y claves para generar las tablas
