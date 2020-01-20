@@ -1,5 +1,7 @@
 Proyecto de juguete para entrenar Beautiful Soup
 
+--EN DESARROLLO--
+
 El objetivo es scrapear los datos de todas las actas votadas por los diputados en Argentina.
 
 Sitio :https://votaciones.hcdn.gob.ar/
