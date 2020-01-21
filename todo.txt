@@ -1,0 +1,3 @@
+scrapeaLosDetallesDeDiputados - prioridad alta
+probarLosObjetosJson - prioridad alta
+crearLasTablasApartirDeLosJson - prioridad media
