@@ -136,8 +136,76 @@ for a in urlActas:
 # **********************************************************
 
 # CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS
+# Los datos de cada diputado estan en una pagina diferente, por eso voy a hacer nuevas peticiones
+# **********************************************************
+myurl = "https://votaciones.hcdn.gob.ar"
+# Los siguientes datos los saque de la misma pagina, mirando el codigo fuente para ver
+# como enviaba las peticiones y cual debia enviar para obtener todos los datos =)
+formQuery = {'anoSearchEstadistica': -1}
+endPoint = "https://votaciones.hcdn.gob.ar/estadisticas/search"
+
+# Peticion al servidor
+r = rqs.post(endPoint, data=formQuery)
+
+# Estado de la conexion
+status = r.status_code
+
+if status == 200:
+    print(f'Conectando a {myurl}')
+    print(f'Estado de la conexion :: {status}')
+else:
+    print('La conexion no se establecio correctamente')
+    print(f'Codigo estado : {status}')
+    quit()
 # **********************************************************
 
+soup = BeautifulSoup(r.content, 'hmlt.parser')
+table = soup.find('table', id='myTable')
+rows = table.find_all('tr')
+
+diputados = list()
+for r in rows:
+    cols = r('td')
+    if cols:
+
+        idDip = cols[0].find('div')['id']
+        urlPerf = myurl + cols[1].find('a')['href']
+        fullName = cols[1].text.strip()
+
+        if len(fullName) > 0:
+            apellido = fullName.split(',')[0]
+            nombre = fullName.split(',')[1]
+        else:
+            apellido = ''
+            nombre = ''
+
+        estado = cols[2].text.strip()
+        bloque = cols[3].text.strip()
+        provincia = cols[4].text.strip()
+        afirmativos = cols[5].text.strip()
+        negativos = cols[6].text.strip()
+        abstenciones = cols[7].text.strip()
+        ausencias = cols[8].text.strip()
+        presidencias = cols[9].text.strip()
+
+        diputados.append({
+            idDip: {
+                'idDip': idDip,
+                'urlPerf': urlPerf,
+                'fullName': fullName,
+                'apellido': apellido,
+                'nombre': nombre,
+                'estado': estado,
+                'bloque': bloque,
+                'provincia': provincia,
+                'afirmativos': afirmativos,
+                'negativos': negativos,
+                'abstenciones': abstenciones,
+                'ausencias': ausencias,
+                'presidencias': presidencias
+                }
+            }
+        )
 # **********************************************************
 
 #DETALLES Y ANOTACIONES
