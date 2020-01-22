@@ -91,15 +91,15 @@ for a in urlActas:
     resolucion = h3[0].text
 
     actas.append({
-        idActa: {
             'idActa': idActa,
             'periodo': periodo,
             'reunion': reunion,
             'numeroActa': numeroActa,
             'titulo': titulo,
             'presidente': presidente,
-            'resolucion': resolucion
-        }}
+            'resolucion': resolucion,
+            'urlActa': urlActa
+        }
     )
 
     # Votacion # *********************************
@@ -119,6 +119,7 @@ for a in urlActas:
             dichos = cols[5].text.strip().lower()
 
             votos.append({
+                'idVotacion': idVotacion,
                 'idVoto': count,
                 'voto': voto,
                 'numeroActa': numeroActa,
@@ -130,7 +131,7 @@ for a in urlActas:
     if not votos:
         continue
     else:
-        votaciones.append({idVotacion: votos})
+        votaciones.append(votos)
 
     time.sleep(1)
 # **********************************************************
@@ -168,7 +169,7 @@ for r in rows:
     cols = r('td')
     if cols:
 
-        idDip = cols[0].find('div')['id']
+        idDip = cols[0].find('div')['id'].split('-')[1]
         urlPerf = myurl + cols[1].find('a')['href']
         fullName = cols[1].text.strip()
 
@@ -189,23 +190,21 @@ for r in rows:
         presidencias = cols[9].text.strip()
 
         diputados.append({
-            idDip: {
-                'idDip': idDip,
-                'urlPerf': urlPerf,
-                'fullName': fullName,
-                'apellido': apellido,
-                'nombre': nombre,
-                'estado': estado,
-                'bloque': bloque,
-                'provincia': provincia,
-                'afirmativos': afirmativos,
-                'negativos': negativos,
-                'abstenciones': abstenciones,
-                'ausencias': ausencias,
-                'presidencias': presidencias
-                }
-            }
-        )
+                    'idDip': idDip,
+                    'urlPerf': urlPerf,
+                    'fullName': fullName,
+                    'apellido': apellido,
+                    'nombre': nombre,
+                    'estado': estado,
+                    'bloque': bloque,
+                    'provincia': provincia,
+                    'afirmativos': afirmativos,
+                    'negativos': negativos,
+                    'abstenciones': abstenciones,
+                    'ausencias': ausencias,
+                    'presidencias': presidencias
+                    }
+                )
 # **********************************************************
 
 #DETALLES Y ANOTACIONES
@@ -223,7 +222,7 @@ for r in rows:
     'resolucion': resolucion
 }
 
-"idDip": {
+idDip = {
     'nombre': nomb,
     'apellido': ap,
     'bloque': bloque,
@@ -234,7 +233,7 @@ for r in rows:
 # por ultimo el idVoto puede ser simplemente un autoincrementable ya que lo importante es el voto,
 # y a que acta y diputado corresponde
 
-"idVotacion": {
+idVotacion = {
     'idVoto': idVoto,
     'voto': voto,
     'acta': idActa,
