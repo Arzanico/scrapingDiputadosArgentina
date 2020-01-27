@@ -63,7 +63,9 @@ for t in datos:
 # RECORRIDO DE LAS ACTAS Y SCRAPING DE LOS DETALLES - ACTAS Y VOTACION
 # **********************************************************
 actas = list()
-votaciones = list()
+votos = list()
+count = 1
+ctrlCount = 0
 for a in urlActas:
     # Conexion a cada Acta # *********************************
     r = rqs.get(a[0])
@@ -74,39 +76,59 @@ for a in urlActas:
     urlActa = a[0]
 
     # VAmos a recuperar estos datos -> Período 123 - Reunión 40 - Acta 31
-    text = soup.find('h5').text.split('-')
+    try:
+        text = soup.find('h5').text.split('-')
+        chequePoint_1 = True
+    except:
+        chequePoint_1 = False
+        text = ['- None', '- None', '- None']
+
     periodo = text[0].split()[1]
     reunion = text[1].split()[1]
     numeroActa = text[2].split()[1]
     idSite = a[1]
-    idActa = idVotacion = '{}-{}-{}'.format(periodo, reunion, numeroActa)
+    idActa = '{}-{}-{}'.format(periodo, reunion, numeroActa)
 
     # Acta # *********************************
-    div = soup.find('div', class_='white-box')
-    h3 = div.find_all('h3')
-    h4 = div.find_all('h4')
+    try:
+        div = soup.find('div', class_='white-box')
 
-    titulo = h4[0].text.strip().lower()
-    presidente = h4[1].find('b').text
-    resolucion = h3[0].text
+        h3 = div.find_all('h3')
+        h4 = div.find_all('h4')
+
+        titulo = h4[0].text.strip().lower()
+        presidente = h4[1].find('b').text
+        resolucion = h3[0].text
+        chequePoint_2 = True
+
+    except:
+        chequePoint_2 = False
+        titulo = None
+        presidente = None
+        resolucion = None
+
+    if not chequePoint_1:
+        if not chequePoint_2:
+            continue
 
     actas.append({
-            'idActa': idActa,
-            'periodo': periodo,
-            'reunion': reunion,
-            'numeroActa': numeroActa,
-            'titulo': titulo,
-            'presidente': presidente,
-            'resolucion': resolucion,
-            'urlActa': urlActa
-        }
+        'idActa': idActa,
+        'fechaActa': dateActa,
+        'periodo': periodo,
+        'reunion': reunion,
+        'numeroActa': numeroActa,
+        'titulo': titulo,
+        'presidente': presidente,
+        'resolucion': resolucion,
+        'urlActa': urlActa,
+        'idSite': idSite
+    }
     )
 
     # Votacion # *********************************
     tabla = soup.find('table', id='myTable')
     rows = tabla.find_all('tr')
-    count = 1
-    votos = list()
+    #     count = 1
     for r in rows:
         cols = [x for x in r.find_all('td')]
         if cols:
@@ -119,7 +141,7 @@ for a in urlActas:
             dichos = cols[5].text.strip().lower()
 
             votos.append({
-                'idVotacion': idVotacion,
+                'idActa': idActa,
                 'idVoto': count,
                 'voto': voto,
                 'numeroActa': numeroActa,
@@ -128,12 +150,14 @@ for a in urlActas:
             })
             count += 1
 
-    if not votos:
-        continue
-    else:
-        votaciones.append(votos)
+    ctrlCount += 1
 
-    time.sleep(1)
+#     if not votos:
+#         continue
+#     else:
+#         votaciones.append(votos)
+
+#     time.sleep(1)
 # **********************************************************
 
 # CONEXION A LA PAGINA DE DONDE VAMOS A SACAR LOS DATOS DE TODOS LOS DIPUTADOS
@@ -205,49 +229,13 @@ for r in rows:
                     'presidencias': presidencias
                     }
                 )
-# **********************************************************
 
-#DETALLES Y ANOTACIONES
-# **********************************************************
-# END
-# Realmente no se como lo manejan desde Nacion, pero se me ocurre para mi trabajo que esta es la mejor
-# manera de ordenar los datos y claves para generar las tablas
 
-"idActa": {
-    'periodo': periodo,
-    'reunion': reunion,
-    'acta': acta,
-    'titulo': titulo,
-    'presidente': presidente,
-    'resolucion': resolucion
-}
+# Output *****************************************************
+diputados_till_25012020 = pd.DataFrame([x for x in diputados])
+actas_till_25012020 = pd.DataFrame([x for x in actas])
+votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip':'idDip'})
 
-idDip = {
-    'nombre': nomb,
-    'apellido': ap,
-    'bloque': bloque,
-    'provincia': provincia,
-}
-# El idVotacion lo voy a contruir con estos datos Período 123 - Reunión 40 - Acta 31
-# quedadando para cada votacion o sesion o acto o como quiera llamarse un idVotacion como este 123-40-31
-# por ultimo el idVoto puede ser simplemente un autoincrementable ya que lo importante es el voto,
-# y a que acta y diputado corresponde
-
-idVotacion = {
-    'idVoto': idVoto,
-    'voto': voto,
-    'acta': idActa,
-    'user': idDip
-}
-
-bloques = {
-    'idBloque': {
-        'nombre': 'nombreBloque'
-    }
-}
-provincias={
-    'idProvicia':{
-        'nombre':'nobre'
-    }
-}
-
+diputados_till_25012020.to_csv('diputados_till_25012020.csv', index=False)
+actas_till_25012020.to_csv('actas_till_25012020.csv', index=False)
+votos_till_25012020.to_csv('votos_till_25012020.csv', index=False)
