@@ -13,7 +13,7 @@ def unixTimeStampConvert(num):
 
 # CONEXION AL SERVIDOR (SITIO WEB), Y REQUEST (PETICION).
 # **********************************************************
-# A que sitio me quiero conectar, parametro y URI
+# Sitio al que voy a hacer la peticion que requests
 myurl = "https://votaciones.hcdn.gob.ar"
 # Los siguientes datos los saque de la misma pagina, mirando el codigo fuente para ver
 # como enviaba las peticiones y cual debia enviar para obtener todos los datos =)
@@ -26,6 +26,7 @@ r = rqs.post(endPoint, data=formQuery)
 # Estado de la conexion
 status = r.status_code
 
+#Si el codigo de conexion que me devuelve es 200 (ok), continuo
 if status == 200:
     print(f'Conectando a {myurl}')
     print(f'Estado de la conexion :: {status}')
@@ -35,17 +36,17 @@ else:
     quit()
 # **********************************************************
 
-# Antes de programar el scraper deberiamos saber bien cuanl es el objeto html que contiene la informacion que
-# queremos por ejemplo, cual es el tag que contiene la info que queremos.
-# podemos identificar el objeto con la informacion a traves del nombre del Tag, del selctor css, "class", del id, etc
+# Antes de programar el scraper deberiamos saber bien cual es el objeto html o tag que contiene la informacion que
+# queremos extraer. 
+# Para este caso el elemento que tiene la informacio nquue quiero es u <tr></tr> con el attributo clase="row-acta"
 
-# El elemento que me interesa tiene la clase "row-acta"
 clase = "row-acta"
 
 # Creo el objeto BeautifulSoup
 soup = BeautifulSoup(r.content, 'html.parser')
 
-# El tipo de dato es un result set de beautiful soup, es un iterable, algo asi como una lista
+# Uso la libreria bs4 para buscar en el cuerpo html de la pagina el contenedor <tr> que tiene la clase que busco.
+# El tipo de dato es un result set de beautiful soup, un iterable con el objeto y sus decendientes
 datos = soup.find_all("tr", class_=clase)
 
 # EXTRACCION DE LAS URLS DONDE ESTAN LOS DETALLES DE CADA VOTACION
