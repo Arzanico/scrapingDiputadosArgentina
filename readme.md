@@ -1,7 +1,8 @@
 ## Proyecto de Scraping con BeautifulSoup
+Dependendencies.
 
-equest 2.22.0
-beautifulsoup4 4.8.2
+*) request 2.22.0
+*) beautifulsoup4 4.8.2
 
 --EN DESARROLLO--
 
