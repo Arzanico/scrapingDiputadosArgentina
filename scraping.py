@@ -79,9 +79,9 @@ for a in urlActas:
     # VAmos a recuperar estos datos -> Período 123 - Reunión 40 - Acta 31
     try:
         text = soup.find('h5').text.split('-')
-        chequePoint_1 = True
+        checkPoint_1 = True
     except:
-        chequePoint_1 = False
+        checkPoint_1 = False
         text = ['- None', '- None', '- None']
 
     periodo = text[0].split()[1]
@@ -100,16 +100,16 @@ for a in urlActas:
         titulo = h4[0].text.strip().lower()
         presidente = h4[1].find('b').text
         resolucion = h3[0].text
-        chequePoint_2 = True
+        checkPoint_2 = True
 
     except:
-        chequePoint_2 = False
+        checkPoint_2 = False
         titulo = None
         presidente = None
         resolucion = None
 
-    if not chequePoint_1:
-        if not chequePoint_2:
+    if not checkPoint_1:
+        if not checkPoint_2:
             continue
 
     actas.append({
