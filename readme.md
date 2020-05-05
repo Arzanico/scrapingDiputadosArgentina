@@ -1,4 +1,7 @@
-Proyecto de juguete para entrenar Beautiful Soup
+## Proyecto de Scraping con BeautifulSoup
+
+equest 2.22.0
+beautifulsoup4 4.8.2
 
 --EN DESARROLLO--
 
