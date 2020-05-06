@@ -1,12 +1,6 @@
 #! venv/bin/ python3
 # *-encoding: utf8 -*
 
-import requests as rqs
-from bs4 import BeautifulSoup
-import datetime
-import time
-
-
 def unixTimeStampConvert(num):
     convert = datetime.datetime.fromtimestamp(int(num)).strftime('%Y-%m-%d %H:%M:%S')
     return convert
