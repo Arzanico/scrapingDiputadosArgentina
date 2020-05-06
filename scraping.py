@@ -1,9 +1,17 @@
-#! venv/bin/ python3
+# ! venv/bin/ python3
 # *-encoding: utf8 -*
+
+
+import datetime
+import requests as rqs
+from bs4 import BeautifulSoup
+import pandas as pd
+
 
 def unixTimeStampConvert(num):
     convert = datetime.datetime.fromtimestamp(int(num)).strftime('%Y-%m-%d %H:%M:%S')
     return convert
+
 
 # CONEXION AL SERVIDOR (SITIO WEB), Y REQUEST (PETICION).
 # **********************************************************
@@ -20,7 +28,7 @@ r = rqs.post(endPoint, data=formQuery)
 # Estado de la conexion
 status = r.status_code
 
-#Si el codigo de conexion que me devuelve es 200 (ok), continuo
+# Si el codigo de conexion que me devuelve es 200 (ok), continuo
 if status == 200:
     print(f'Conectando a {myurl}')
     print(f'Estado de la conexion :: {status}')
@@ -50,7 +58,7 @@ for t in datos:
     # Columnas
     cols = t.find_all('td')
     idActa = t['id'],  # Seria Clave principal
-    date = unixTimeStampConvert(t['data-date']) # Tengo que convertir el formato de la fecha en human friendly =)
+    date = unixTimeStampConvert(t['data-date'])  # Tengo que convertir el formato de la fecha en human friendly =)
     # Me voy a guardar los datos que extraje en una lista de tuplas
     urlActas.append((myurl + cols[4].find('a')['href'], idActa, date))
 # **********************************************************
@@ -74,7 +82,7 @@ for a in urlActas:
     try:
         text = soup.find('h5').text.split('-')
         checkPoint_1 = True
-    except:
+    except AttributeError:
         checkPoint_1 = False
         text = ['- None', '- None', '- None']
 
@@ -85,22 +93,22 @@ for a in urlActas:
     idActa = '{}-{}-{}'.format(periodo, reunion, numeroActa)
 
     # Acta # *********************************
-    try:
-        div = soup.find('div', class_='white-box')
-
+    div = soup.find('div', class_='white-box')
+    if div:
         h3 = div.find_all('h3')
         h4 = div.find_all('h4')
-
-        titulo = h4[0].text.strip().lower()
-        presidente = h4[1].find('b').text
-        resolucion = h3[0].text
-        checkPoint_2 = True
-
-    except:
-        checkPoint_2 = False
-        titulo = None
-        presidente = None
-        resolucion = None
+        try:
+            titulo = h4[0].text.strip().lower()
+            presidente = h4[1].find('b').text
+            resolucion = h3[0].text
+            checkPoint_2 = True
+        except AttributeError:
+            checkPoint_2 = False
+            titulo = None
+            presidente = None
+            resolucion = None
+    else:
+        continue
 
     if not checkPoint_1:
         if not checkPoint_2:
@@ -130,6 +138,7 @@ for a in urlActas:
             try:
                 idDip = cols[0].find('div')['id'].split('-')[1]
             except TypeError:
+                idDip = None
                 pass
 
             voto = cols[4].text.strip().lower()
@@ -209,27 +218,26 @@ for r in rows:
         presidencias = cols[9].text.strip()
 
         diputados.append({
-                    'idDip': idDip,
-                    'urlPerf': urlPerf,
-                    'fullName': fullName,
-                    'apellido': apellido,
-                    'nombre': nombre,
-                    'estado': estado,
-                    'bloque': bloque,
-                    'provincia': provincia,
-                    'afirmativos': afirmativos,
-                    'negativos': negativos,
-                    'abstenciones': abstenciones,
-                    'ausencias': ausencias,
-                    'presidencias': presidencias
-                    }
-                )
-
+            'idDip': idDip,
+            'urlPerf': urlPerf,
+            'fullName': fullName,
+            'apellido': apellido,
+            'nombre': nombre,
+            'estado': estado,
+            'bloque': bloque,
+            'provincia': provincia,
+            'afirmativos': afirmativos,
+            'negativos': negativos,
+            'abstenciones': abstenciones,
+            'ausencias': ausencias,
+            'presidencias': presidencias
+        }
+        )
 
 # Output *****************************************************
 diputados_till_25012020 = pd.DataFrame([x for x in diputados])
 actas_till_25012020 = pd.DataFrame([x for x in actas])
-votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip':'idDip'})
+votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip': 'idDip'})
 
 diputados_till_25012020.to_csv('diputados_till_25012020.csv', index=False)
 actas_till_25012020.to_csv('actas_till_25012020.csv', index=False)
