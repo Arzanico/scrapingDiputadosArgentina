@@ -1,4 +1,7 @@
 TABLES SCHEMAS
+Necesito las siguientes tablas:
+Actas, Diputados y Votos
+
 Table Actas
     idActas INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
     fecha DATE,
