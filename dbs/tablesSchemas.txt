@@ -1,0 +1,41 @@
+TABLES SCHEMAS
+Table Actas
+    idActas INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+    fecha DATE,
+    periodo INTEGER,
+    reunion INTEGER,
+    numeroActa,
+    title TEXT,
+    presidente TEXT /*idDiputado*/
+    resolucion INTEGER /* 0 NEGATIVO 1 POSITIVO NONE NEUTRAL */
+    urlActa TEXT,
+    idUrl INTEGER
+
+Table votos
+    idVoto INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+    idActa INTEGER,
+    voto INTEGER,
+    numeroActa /* esto viene de la tabla actas */
+    idDiputado INTEGER,
+    descripcion TEXT
+
+
+
+Table Diputados
+    idDiputado INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY UNIQUE,
+    fullName TEXT,
+    urlProfile TEXT,
+    estado INTEGER,
+    idBloque INTEGER,
+    idProvincia INTEGER,
+
+Table bloques
+    idBloque INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY UNIQUE,
+    name
+
+Table Provincias
+    idProvincia INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY UNIQUE,
+    name TEXT
+
+
+
