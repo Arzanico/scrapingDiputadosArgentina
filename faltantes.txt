@@ -1,6 +1,8 @@
-El proyecto esta en la fase final ya. He arreglado algunos detalles relacionados al scraping y quedo bastante bien.
+Cosas pendientes
 
-Algunos detalles que quiero pulir son por ejemplo los nombres de las columnas que tienen los identificadores para hacer los joins.
+Verificar los nombre de las columnas para exportar los datos a una base sqlite
 Verificar los datos de cada acta
-Escribir el codigo para crear las basess de datos
-Generar una funcion que chequee actualizaciones en la pagina de diputados y verifique si hay nuevas actas para incluir en la base de datos.
+Crear la base de datos y tablas
+
+Para futuro
+Ver la posibilidad de desarrollar un script para guardar las nuevas publicaciones en el sitio.
