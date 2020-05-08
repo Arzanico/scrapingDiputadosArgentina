@@ -3,6 +3,8 @@ Cosas pendientes
 Verificar los nombre de las columnas para exportar los datos a una base sqlite
 Verificar los datos de cada acta
 Crear la base de datos y tablas
+Crear al inicio del script de extraccion las lineas para chequear cual fue el utlimo dato extraido
 
 Para futuro
 Ver la posibilidad de desarrollar un script para guardar las nuevas publicaciones en el sitio.
+
