@@ -22,8 +22,6 @@ Table votos
     idDiputado INTEGER,
     descripcion TEXT
 
-
-
 Table Diputados
     idDiputado INTEGER NOT NULL AUTOINCREMENT PRIMARY KEY UNIQUE,
     fullName TEXT,
