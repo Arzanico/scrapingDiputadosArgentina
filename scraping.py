@@ -234,6 +234,11 @@ for r in rows:
         }
         )
 
+# Insersion de los registros en la Base de Datos.
+diputados
+actas
+votos
+
 # Output *****************************************************
 diputados_till_25012020 = pd.DataFrame([x for x in diputados])
 actas_till_25012020 = pd.DataFrame([x for x in actas])
