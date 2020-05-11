@@ -242,3 +242,4 @@ votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip': 'i
 diputados_till_25012020.to_csv('diputados_till_25012020.csv', index=False)
 actas_till_25012020.to_csv('actas_till_25012020.csv', index=False)
 votos_till_25012020.to_csv('votos_till_25012020.csv', index=False)
+

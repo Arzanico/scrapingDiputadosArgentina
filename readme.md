@@ -6,6 +6,8 @@ Dependencias
 - request 2.22.0
 - beautifulsoup4 4.8.2
 
+> Los archivos csv estan en una carpeta aparte. La misma no esta en el repositorio con la intencion de ahorrar espacio.
+
 El sitio del que se extrajeron los dato es el siguiente: https://votaciones.hcdn.gob.ar
 
 Los datos a extraer son los siguientes.
