@@ -1,0 +1,5 @@
+# Data files and data bases will be on a separate folder to avoid updates by pushing changes from Pycharm
+# The path to data files such as csv will be the next
+# ~/dataAndDbs/~ <- For the server :: for repo -> ~/scrapingDiputados/data/csv/file.csv
+# The path to the data bases wil be
+# ~/dataAndDbs/~ <- For the server :: for repo -> ~/scrapingDiputados/data/dbs/file.csv
