@@ -5,7 +5,7 @@
 import datetime
 import requests as rqs
 from bs4 import BeautifulSoup
-import pandas as pd
+# import pandas as pd
 
 
 def unixTimeStampConvert(num):
@@ -240,11 +240,11 @@ actas
 votos
 
 # Output *****************************************************
-diputados_till_25012020 = pd.DataFrame([x for x in diputados])
-actas_till_25012020 = pd.DataFrame([x for x in actas])
-votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip': 'idDip'})
+# diputados_till_25012020 = pd.DataFrame([x for x in diputados])
+# actas_till_25012020 = pd.DataFrame([x for x in actas])
+# votos_till_25012020 = pd.DataFrame([x for x in votos]).rename(columns={'dip': 'idDip'})
 
-diputados_till_25012020.to_csv('diputados_till_25012020.csv', index=False)
-actas_till_25012020.to_csv('actas_till_25012020.csv', index=False)
-votos_till_25012020.to_csv('votos_till_25012020.csv', index=False)
+# diputados_till_25012020.to_csv('diputados_till_25012020.csv', index=False)
+# actas_till_25012020.to_csv('actas_till_25012020.csv', index=False)
+# votos_till_25012020.to_csv('votos_till_25012020.csv', index=False)
 
