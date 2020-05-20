@@ -4,4 +4,5 @@
 4) Transformar los datos para exportar a una base de datos
 5) Implementar una base de datos no realcional, Mongo, con los datos de los diputados
 6) Probar una base Neo4j con las relaciones entre los diputados y las actas, sesiones.
+7) Indexar todo lso textos para implementar un buscador.
 
