@@ -26,3 +26,7 @@ Los datos a extraer son los siguientes.
  - Bloque
  - Provincia
  3) Votaciones -> Como voto en cada sesion -> Relacionar Acta, voto, diputado
+
+
+El objetivo de este proyecto es brindar una herramienta de analisis y seguimiento para periodistas, politologos, antrolopogos, profesores, estudiantes o toda persona que decida hacer un analisis sobre la toma de deciciones y comportamientos dentro de la camara de diputados de la nacion Argentina.
+
