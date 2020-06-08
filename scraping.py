@@ -40,7 +40,7 @@ else:
 
 # Antes de programar el scraper deberiamos saber bien cual es el objeto html o tag que contiene la informacion que
 # queremos extraer. 
-# Para este caso el elemento que tiene la informacio nquue quiero es u <tr></tr> con el attributo clase="row-acta"
+# Para este caso el elemento que tiene la informacion que quiero es el tag <tr></tr> con el attributo clase="row-acta"
 
 clase = "row-acta"
 
