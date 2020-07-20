@@ -1,4 +1,6 @@
-## Proyecto de Scraping con BeautifulSoup
+## Proyecto de analisis de datos relacionados con el desempeño de funcionarios publicos de la Republica Argentina
+
+Origen de los datos: https://votaciones.hcdn.gob.ar
 
 Python 3.7
 
@@ -11,8 +13,6 @@ Dependencias
 - sqlite3
 
 > Los archivos csv estan en una carpeta aparte. La misma no esta en el repositorio con la intencion de ahorrar espacio.
-
-El sitio del que se extrajeron los dato es el siguiente: https://votaciones.hcdn.gob.ar
 
 Los datos a extraer son los siguientes.
 
