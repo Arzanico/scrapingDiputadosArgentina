@@ -3,15 +3,6 @@
 Origen de los datos: https://votaciones.hcdn.gob.ar
 
 Python 3.7
-
-Dependencias
-- request 2.22.0
-- beautifulsoup4 4.8.2
-- nltk
-- pandas
-- numpy
-- sqlite3
-
 > Los archivos csv estan en una carpeta aparte. La misma no esta en el repositorio con la intencion de ahorrar espacio.
 
 Los datos a extraer son los siguientes.
