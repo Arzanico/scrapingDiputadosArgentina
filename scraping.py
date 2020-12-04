@@ -5,7 +5,6 @@
 import datetime
 import requests as rqs
 from bs4 import BeautifulSoup
-# import pandas as pd
 
 
 def unixTimeStampConvert(num):
@@ -17,6 +16,7 @@ def unixTimeStampConvert(num):
 # **********************************************************
 # Sitio al que voy a hacer la peticion que requests
 myurl = "https://votaciones.hcdn.gob.ar"
+
 # Los siguientes datos los saque de la misma pagina, mirando el codigo fuente para ver
 # como enviaba las peticiones y cual debia enviar para obtener todos los datos =)
 formQuery = {'anoSearch': -1, 'txtSearch': ''}
@@ -38,8 +38,10 @@ else:
     quit()
 # **********************************************************
 
-# Antes de programar el scraper deberiamos saber bien cual es el objeto html o tag que contiene la informacion que
-# queremos extraer. 
+# Antes de empezar a programar el scraper debemos mirar con atencion el codigo de la pagina que vamos a escrapear.
+# Es bueno tambien, rebisar como se comporta la pagina a partir de los eventos de click, scroll o cuando envia formularios. 
+# Haciendo este analisis podemos detectar comportamientos que querriamos capturar o manipular con el objeto de llegar a la informacion necesaria.
+# En este caso el objeto html o tag que contiene la informacion que queremos extraer. 
 # Para este caso el elemento que tiene la informacion que quiero es el tag <tr></tr> con el attributo clase="row-acta"
 
 clase = "row-acta"
