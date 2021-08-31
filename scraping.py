@@ -14,7 +14,6 @@ def unixTimeStampConvert(num):
 
 # CONEXION AL SERVIDOR (SITIO WEB), Y REQUEST (PETICION).
 # **********************************************************
-# Sitio al que voy a hacer la peticion que requests
 myurl = "https://votaciones.hcdn.gob.ar"
 
 # Los siguientes datos los saque de la misma pagina, mirando el codigo fuente para ver
@@ -28,7 +27,7 @@ r = rqs.post(endPoint, data=formQuery)
 # Estado de la conexion
 status = r.status_code
 
-# Si el codigo de conexion que me devuelve es 200 (ok), continuo
+# Check del status code
 if status == 200:
     print(f'Conectando a {myurl}')
     print(f'Estado de la conexion :: {status}')
@@ -39,7 +38,7 @@ else:
 # **********************************************************
 
 # Antes de empezar a programar el scraper debemos mirar con atencion el codigo de la pagina que vamos a escrapear.
-# Es bueno tambien, rebisar como se comporta la pagina a partir de los eventos de click, scroll o cuando envia formularios. 
+# Es bueno tambien, ver como se comporta la pagina a partir de los eventos de click, scroll o cuando envia formularios. 
 # Haciendo este analisis podemos detectar comportamientos que querriamos capturar o manipular con el objeto de llegar a la informacion necesaria.
 # En este caso el objeto html o tag que contiene la informacion que queremos extraer. 
 # Para este caso el elemento que tiene la informacion que quiero es el tag <tr></tr> con el attributo clase="row-acta"
