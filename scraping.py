@@ -5,7 +5,7 @@
 import datetime
 import requests as rqs
 from bs4 import BeautifulSoup
-import pandas as pd
+
 
 
 def unixTimeStampConvert(num):
@@ -190,7 +190,7 @@ else:
     quit()
 # **********************************************************
 
-soup = BeautifulSoup(r.content, 'hmlt.parser')
+soup = BeautifulSoup(r.content, 'html.parser')
 table = soup.find('table', id='myTable')
 rows = table.find_all('tr')
 
