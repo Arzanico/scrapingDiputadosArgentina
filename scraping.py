@@ -2,6 +2,8 @@
 # *-encoding: utf8 -*
 
 
+#update 10/15/2021 The web site have been changed and some of the end points calls will fail when try to retrieve data.
+
 import datetime
 import requests as rqs
 from bs4 import BeautifulSoup
